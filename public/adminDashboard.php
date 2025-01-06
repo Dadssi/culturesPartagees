@@ -3,6 +3,7 @@ require_once '../config/database.php';
 require_once '../classes/user.php';
 require_once '../classes/admin.php';
 require_once '../classes/category.php';
+require_once '../classes/Tag.php';
 // require_once '../public/login.php';
 
 
@@ -35,6 +36,9 @@ $totalCategories = $result['total'];
 // ----------------------------------------------------------------------
 $totalVisitors = User::countUsersByRole('visitor');
 $totalAuthors = User::countUsersByRole('author');
+// ----------------------------------------------------------------------
+$tags = tag::getAllTags();
+
 
 
 
@@ -79,6 +83,7 @@ foreach ($allUsers as $user) {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' 
     rel='stylesheet'>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/8dd174d5fa.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
@@ -89,17 +94,17 @@ foreach ($allUsers as $user) {
     <!-- Navbar End -->
 
 <!-- Sidebar -->
-<aside class="w-64 bg-purple-600 text-white h-screen fixed">
+<aside class="w-64 bg-gradient-to-l from-purple-950 via-purple-600 to-purple-950 text-white h-screen fixed">
         <div class="p-4 text-center">
             <h1 class="text-lg font-bold">DASHBOARD ADMIN</h1>
         </div>
         <nav class="mt-6">
             <ul>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="categories-btn" data-section="manage-categories">Gestion des catégories</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="users-btn" data-section="manage-users">Gestion des utilisateurs</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="articles-btn" data-section="manage-articles">Articles en attente</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="statistics-btn" data-section="statistics">Statistiques</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="logout-btn">Logout</li>
+                <li class="mx-2 mb-1 p-3 bg-purple-950 border-b border-purple-300 hover:bg-purple-500 cursor-pointer" id="categories-btn" data-section="manage-categories">Gestion des catégories</li>
+                <li class="mx-2 mb-1 p-3 bg-purple-950 border-b border-purple-300 hover:bg-purple-500 cursor-pointer" id="users-btn" data-section="manage-users">Gestion des utilisateurs</li>
+                <li class="mx-2 mb-1 p-3 bg-purple-950 border-b border-purple-300 hover:bg-purple-500 cursor-pointer" id="articles-btn" data-section="manage-articles">Articles en attente</li>
+                <li class="mx-2 mb-1 p-3 bg-purple-950 border-b border-purple-300 hover:bg-purple-500 cursor-pointer" id="statistics-btn" data-section="statistics">Statistiques</li>
+                <li class="mx-2 mb-1 p-3 bg-purple-950 border-b border-purple-300 hover:bg-purple-500 cursor-pointer" id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>Logout</li>
             </ul>
         </nav>
     </aside>
@@ -107,26 +112,26 @@ foreach ($allUsers as $user) {
     <!-- Main Content -->
     <main class="ml-64 p-6 mb-96">
         <!-- Header -->
-        <header class="mb-6 h-48 bg-purple-500 flex items-center justify-between px-4 py-4">
+        <header class="mb-6 h-48 bg-gradient-to-l from-purple-950 via-purple-600 to-purple-950 flex items-center justify-between px-4 py-4 shadow-2xl">
             <h2 class="text-xl font-bold text-white">Bonjour, <?php echo htmlspecialchars($userInfo['last_name']) . " " . htmlspecialchars($userInfo['first_name']); ?></h2>
             <img class="w-36 rounded-full" src="<?php echo htmlspecialchars($userInfo['user_picture_path']); ?>" alt="photo de profil">
         </header>
 
         <!-- Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white shadow rounded-lg p-4">
+            <div class="bg-white shadow-2xl rounded-lg p-4">
                 <h3 class="text-lg font-semibold text-gray-600">Total des visiteurs</h3>
                 <p class="text-2xl font-bold text-purple-600"><?php echo htmlspecialchars($totalVisitors)?></p>
             </div>
-            <div class="bg-white shadow rounded-lg p-4">
+            <div class="bg-white shadow-2xl rounded-lg p-4">
                 <h3 class="text-lg font-semibold text-gray-600">Total des auteurs</h3>
                 <p class="text-2xl font-bold text-purple-600"><?php echo htmlspecialchars($totalAuthors)?></p>
             </div>
-            <div class="bg-white shadow rounded-lg p-4">
+            <div class="bg-white shadow-2xl rounded-lg p-4">
                 <h3 class="text-lg font-semibold text-gray-600">Total des articles</h3>
                 <p class="text-2xl font-bold text-purple-600">32</p>
             </div>
-            <div class="bg-white shadow rounded-lg p-4">
+            <div class="bg-white shadow-2xl rounded-lg p-4">
                 <h3 class="text-lg font-semibold text-gray-600">Total des catégories</h3>
                 <p class="text-2xl font-bold text-purple-600"><?php echo htmlspecialchars($totalCategories)  ?></p>
             </div>
@@ -135,7 +140,7 @@ foreach ($allUsers as $user) {
         <!-- gestion des catégories -->
         <div id="manage-categories" class="section hidden mt-8">
             <h3 class="text-lg font-semibold text-purple-500 mb-4">Liste des catégories</h3>
-            <div class="overflow-x-auto p-4 bg-white rounded-lg shadow-md mb-52">
+            <div class="overflow-x-auto p-4 bg-white rounded-lg shadow-md mb-16">
                 <table class="table-auto w-full border-collapse border border-gray-200">
                 <thead class="bg-purple-700 text-white">
                     <tr>
@@ -182,6 +187,33 @@ foreach ($allUsers as $user) {
                     </div>
                 </div>
             </div>
+            <h1 class="text-purple-700 font-bold mb-6">Gestion des tags :</h1>
+            <div class="mb-4">
+                <h2 class="mb-4 text-lg text-purple-950">- Ajouter Tag :</h2>
+                <form action="../includes/tag.actions.php" method="POST" class="flex">
+                    <label for="tag_name"></label>
+                    <input type="text" id="tag_name" name="tag_name" class="w-1/2 px-4 py-2 border border-gray-300 rounded bg-gray-100" required name="categoryLabel">
+                    <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-1/4">
+                        Ajouter Tag
+                    </button>
+                </form>
+            </div>
+            <h2 class="my-4 font-bold text-rose-700">Liste des tags :</h2>
+            <div class="width3/4 rounded shadow-xl bg-purple-300 min-h-48">
+                <?php foreach($tags as $tag) : ?>
+                <span id="badge-dismiss-dark" class="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-gray-800 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300">
+                    <?php echo htmlspecialchars($tag['tag_title']); ?>
+                    <button type="button" class="inline-flex items-center p-1 ms-2 text-sm text-gray-400 bg-transparent rounded-sm hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-gray-300" data-dismiss-target="#badge-dismiss-dark" aria-label="Remove">
+                        <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Remove badge</span>
+                    </button>
+                </span>
+                <?php endforeach; ?>
+            </div>
+
+           
         </div>
         <!-- Gestion des utilisateurs -->
         <div id="manage-users" class="section hidden mt-8>
@@ -372,6 +404,28 @@ foreach ($allUsers as $user) {
 
 
     <script>
+//         document.querySelectorAll('button[data-section]').forEach(button => {
+//     button.addEventListener('click', () => {
+//         const targetSection = button.getAttribute('data-section');
+
+//         // Masquer toutes les sections
+//         document.querySelectorAll('.section').forEach(section => {
+//             section.classList.add('hidden');
+//         });
+
+//         // Afficher la section cible
+//         document.getElementById(targetSection).classList.remove('hidden');
+//     });
+// });
+
+
+
+
+
+
+
+
+
       let categoriesBtn = document.getElementById("categories-btn");
       let usersBtn = document.getElementById("users-btn");
       let articlesBtn = document.getElementById("articles-btn");

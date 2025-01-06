@@ -31,7 +31,47 @@ CREATE TABLE articles (
     id_category INT NOT NULL REFERENCES categories(id_category) ON DELETE CASCADE,
     id_author INT NOT NULL REFERENCES users(id_user) ON DELETE CASCADE
 );
+ALTER TABLE articles CHANGE user_picture_path article_picture_path VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
 
 INSERT INTO users (first_name, last_name, email, password, role) VALUES ('Mohamed Abdelhak', 'DADSSI', 'd4dssi@gmail.com', 'Admin@123', 'admin');
+
+
+CREATE TABLE tags (
+    id_tag INT AUTO_INCREMENT PRIMARY KEY,
+    tag_title VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE article_tags (
+    id_article INT NOT NULL,
+    id_tag INT NOT NULL,
+    PRIMARY KEY (id_article, id_tag),
+    FOREIGN KEY (id_article) REFERENCES articles(id_article) ON DELETE CASCADE,
+    FOREIGN KEY (id_tag) REFERENCES tags(id_tag) ON DELETE CASCADE
+);
+
+INSERT INTO articles (title, content, id_category, id_author, article_picture_path) 
+VALUES ('article 1', 'Contenu de l\'article 1', 1, 2, '..assetsimgsuploads677ac9ac1e856-677ab9ac1e856-garde-royale.jpg');
+
+SET @article_id = LAST_INSERT_ID();
+
+INSERT INTO article_tags (id_article, id_tag) 
+VALUES 
+    (@article_id, 1), 
+    (@article_id, 5), 
+    (@article_id, 2);
+
+    SELECT * FROM articles WHERE id_article = @article_id;
+
+
+SELECT * FROM article_tags WHERE id_article = @article_id;
+
+
+SELECT t.tag_title 
+FROM tags t
+JOIN article_tags at ON t.id_tag = at.id_tag
+WHERE at.id_article = @article_id;
+
+
+
 
 
