@@ -9,17 +9,20 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     user_picture_path VARCHAR(255)
 );
+INSERT INTO users (first_name, last_name, email, password, role) VALUES ('Mohamed Abdelhak', 'DADSSI', 'dadssi@gmail.com', 'Admin@123', 'admin');
 
 ALTER TABLE users 
-CHANGE is_suspended statut ENUM('actif', 'suspendu') NOT NULL DEFAULT 'active';
+CHANGE is_suspended statut ENUM('actif', 'suspendu') NOT NULL DEFAULT 'actif';
 
 ALTER TABLE users 
-CHANGE created_at registration_date DATE NOT NULL;
+CHANGE created_at registration_date CURRENT_DATE NOT NULL;
 
 CREATE TABLE categories (
     id_category INT AUTO_INCREMENT PRIMARY KEY,
     label VARCHAR(255) NOT NULL UNIQUE
 );
+
+INSERT INTO categories (label) VALUES ('médecine');
 
 CREATE TABLE articles (
     id_article INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,7 +36,6 @@ CREATE TABLE articles (
 );
 ALTER TABLE articles CHANGE user_picture_path article_picture_path VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
 
-INSERT INTO users (first_name, last_name, email, password, role) VALUES ('Mohamed Abdelhak', 'DADSSI', 'd4dssi@gmail.com', 'Admin@123', 'admin');
 
 
 CREATE TABLE tags (
@@ -50,7 +52,7 @@ CREATE TABLE article_tags (
 );
 
 INSERT INTO articles (title, content, id_category, id_author, article_picture_path) 
-VALUES ('article 1', 'Contenu de l\'article 1', 1, 2, '..assetsimgsuploads677ac9ac1e856-677ab9ac1e856-garde-royale.jpg');
+VALUES ('article 1', 'Contenu de l\'article 1', 1, 2, '..assets/imgs/uploads/677ab9ac1e856-garde-royale.jpg');
 
 SET @article_id = LAST_INSERT_ID();
 

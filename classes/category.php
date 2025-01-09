@@ -60,5 +60,15 @@ class Category {
         $stmt = $db->query("SELECT COUNT(*) as total FROM categories");
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function exists() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM categories WHERE label = :label");
+        // $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':label', $this->label);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() > 0;
+    }
 }
 ?>

@@ -17,9 +17,6 @@ if (isset($_SESSION['user_id'])) {
     $userInfo = User::getInfoUser($userId);
 
     if (!$userInfo) {
-        // echo "Bienvenue, " . htmlspecialchars($userInfo['first_name']) . "!<br>";
-        // echo "Votre email : " . htmlspecialchars($userInfo['email']) . "<br>";
-        // echo "Votre rôle : " . htmlspecialchars($userInfo['role']) . "<br>";
         echo "Impossible de récupérer les informations de l'utilisateur.";
     }
 } else {
@@ -81,11 +78,11 @@ $tags = tag::getAllTags();
         </div>
         <nav class="mt-6">
             <ul>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="show-my-articles" data-section="add-article-section">Mes articles</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="add-article-btn" data-section="manage-users">ajouter un article</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="articles-btn" data-section="manage-articles">Articles en attente</li>
-                <li class="p-3 hover:bg-purple-500 cursor-pointer" id="statistics-btn" data-section="statistics">Statistiques</li>
-                <li class="p-3 bg-purple-950 hover:bg-purple-500 cursor-pointer" ><a href="../includes/logout.php"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>Logout</a></li>
+                <li class="p-3 mx-2 my-1 border border-1 border-purple-950 hover:bg-purple-500 cursor-pointer" id="show-my-articles" data-section="add-article-section">Mes articles</li>
+                <li class="p-3 mx-2 my-1 border border-1 border-purple-950 hover:bg-purple-500 cursor-pointer" id="add-article-btn" data-section="manage-users">ajouter un article</li>
+                <li class="p-3 mx-2 my-1 border border-1 border-purple-950 hover:bg-purple-500 cursor-pointer" id="articles-btn" data-section="manage-articles">Articles en attente</li>
+                <li class="p-3 mx-2 my-1 border border-1 border-purple-950 hover:bg-purple-500 cursor-pointer" id="statistics-btn" data-section="statistics">Mon Profile</li>
+                <li class="p-3 mx-2 my-1 border border-1 border-purple-950 bg-purple-950 hover:bg-purple-500 cursor-pointer" ><a href="../includes/logout.php"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>Déconnexion</a></li>
             </ul>
         </nav>
     </aside>
@@ -95,7 +92,8 @@ $tags = tag::getAllTags();
         <!-- Header -->
         <header class="mb-6 h-48 bg-gradient-to-l from-purple-950 via-purple-600 to-purple-950 flex items-center justify-between px-4 py-4 shadow-2xl">
             <h2 class="text-xl font-bold text-white">Bonjour, <?php echo htmlspecialchars($userInfo['last_name']) . " " . htmlspecialchars($userInfo['first_name']); ?></h2>
-            <img class="w-36 rounded-full" src="<?php echo htmlspecialchars($userInfo['user_picture_path']); ?>" alt="photo de profil">
+            <h1 class="text-5xl font-bold text-purple-200 drop-shadow-[0_35px_35px_rgba(107,33,168,0.9)]">CULTURE PARTAGEE</h1>
+            <img class="w-36 rounded-full border border-4 border-purple-600" src="<?php echo htmlspecialchars($userInfo['user_picture_path']); ?>" alt="photo de profil">
         </header>
 
         <!-- Cards -->
@@ -152,7 +150,7 @@ $tags = tag::getAllTags();
                 </div>
 
                 <!-- Modal pour ajouter la catégorie -->
-                <div id="categoryModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                <div id="categoryModal" class="hidden fixed inset-0 w-1/3 bg-gray-800 bg-opacity-50 flex justify-center items-center">
                     <div class="bg-white p-6 rounded-lg w-1/2">
                         <h2 class="text-xl font-semibold text-center mb-4">Ajouter une catégorie</h2>
                         <form id="categoryForm" action ="../includes/categories-actions.php" method="post">

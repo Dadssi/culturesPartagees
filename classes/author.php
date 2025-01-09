@@ -16,7 +16,7 @@
         ]);
     }
 
-    public function creerArticle($title, $content, $categoryId, $image = null) {
+    public function createArticle($title, $content, $categoryId, $image = null) {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("INSERT INTO articles (title, content, id_category, id_author, image_path) VALUES (:title, :content, :category, :author, :image)");
         return $stmt->execute([
