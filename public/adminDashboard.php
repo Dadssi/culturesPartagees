@@ -86,25 +86,32 @@ foreach ($allUsers as $user) {
     <script src="https://kit.fontawesome.com/8dd174d5fa.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Marhey:wght@300..700&family=Monoton&family=Montserrat:ital,wght@0,100..900;1,100..900&
-family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&
-family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&
-family=Rock+Salt&
-family=Rubik+Vinyl&
-family=Sixtyfour+Convergence&
-family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Marhey:wght@300..700&family=Monoton&family=Montserrat:ital,wght@0,100..900;1,100..900&
+    family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&
+    family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&
+    family=Rock+Salt&
+    family=Rubik+Vinyl&
+    family=Sixtyfour+Convergence&
+    family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .filter-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .filter-panel.show {
+            max-height: 500px;
+        }
+    </style>
 
 </head>
 
-<body class="bg-blue-500">
-    <!-- <div class="w-full h-64 bg-gradient-to-r from-purple-900 via-purple-900/25 to-white">
-        bonjour
-    </div> -->
-    <div class="bg-blue-600">
-        <!-- testing navbar -->
+<body>
+    <div>
         <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');">
-            <div class="flex h-screen antialiased text-gray-900 bg-gray-100">
+            <div id="aside-bar" class="flex h-screen antialiased text-gray-900 bg-gray-100">
             <!-- Loading screen -->
                 <div x-ref="loading" class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-purple-700">Loading...</div>
                 <!-- Sidebar -->
@@ -156,14 +163,15 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                         </button>
                     </div>
                     <nav class="flex flex-col flex-1 w-64 p-4 mt-4 space-y-4">
-                        <a href="#" class="flex items-center space-x-3 text-lg">
+                        <a href="#" class="flex items-center space-x-3 text-lg" id="quick-statistics-btn">
                             <svg class="w-6 h-6 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
-                            <span class="text-gray-800 font-medium">Home</span>
+                            <span class="text-gray-800 font-medium">Statistiques Rapides</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-3 text-lg">
+
+                        <a href="#" class="flex items-center space-x-3 text-lg" id="categories-btn">
                             <svg class="w-6 h-6 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 10h16m-7 4h7m-7 4h7" />
@@ -171,7 +179,7 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             <span class="text-gray-800 font-medium">Gestion des catégories</span>
                         </a>
 
-                        <a href="#" class="flex items-center space-x-3 text-lg">
+                        <a href="#" class="flex items-center space-x-3 text-lg" id="users-btn">
                             <svg class="w-6 h-6 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 3a2 2 0 012-2h10a2 2 0 012 2v18l-7-4-7 4V3z" />
@@ -179,7 +187,7 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             <span class="text-gray-800 font-medium">Gestion des utilisateurs</span>
                         </a>
 
-                        <a href="#" class="flex items-center space-x-3 text-lg">
+                        <a href="#" class="flex items-center space-x-3 text-lg" id="articles-btn">
                             <svg class="w-6 h-6 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 13l4 4L19 7M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
@@ -187,7 +195,7 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             <span class="text-gray-800 font-medium">Articles en attente</span>
                         </a>
 
-                        <a href="#" class="flex items-center space-x-3 text-lg">
+                        <a href="#" class="flex items-center space-x-3 text-lg" id="statistics-btn">
                             <svg class="w-6 h-6 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M11 5v14M8 9v10m6-6v6m4-10v10" />
@@ -196,7 +204,7 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                         </a>
                     </nav>
                     <div class="flex-shrink-0 p-4">
-                        <button class="flex items-center space-x-2">
+                        <button class="flex items-center space-x-2 cursor-pointer" id="logout-btn">
                             <svg aria-hidden="true" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                             </svg>
@@ -208,48 +216,80 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
             <!-- end aside bar -->
 
             <!-- start main container -->
-            <main class="flex flex-col flex-1 w-full items-end">
+            <main class="flex flex-col flex-1 w-full bg-gray-100">
                 <!-- bouton d'affichage de la barre latérale -->
-                <button @click="isSidebarOpen = true" class="fixed p-2 text-white bg-purple-900 rounded-lg top-5 left-5">
-                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    <span class="sr-only">Open menu</span>
-                </button>
-                <!---Header of main -------------------------------------------------------------------------------------------  -->
-                <header class="mb-6 h-48 w-11/12 bg-gradient-to-l from-purple-950 via-purple-600 to-purple-950 flex flex-col items-center px-4 py-4 shadow-2xl">
-                    <div class="flex items-center justify-center mx-auto">
-                        <h1 class="text-5xl text-center font-bold text-purple-200" style="font-family:'Rubik Vinyl', serif; letter-spacing:0.5rem; filter:drop-shadow(10px, 35px, 35px, rgba(201, 168, 228, 0.9));" >CULTURE PARTAGEE</h1>
+                <section class="flex justify-between bg-gradient-to-l from-purple-950 via-purple-600 to-purple-950 shadow-2xl items-center p-4">
+                    <div class="w-[10%]">
+                        <button @click="isSidebarOpen = true" class="fixed p-2 text-white bg-purple-600 rounded-lg left-4 lg:left-10 top-6 lg:top-12">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <span class="sr-only">Open menu</span>
+                        </button>
                     </div>
-                    <div class="items-center justify-center">
-                        <h2 class="text-xl font-semi-bold text-white text-center">Bonjour, <br><span class="font-bold text-2xl text-purple-100"><?php echo htmlspecialchars($userInfo['last_name']) . " " . htmlspecialchars($userInfo['first_name']); ?></span></h2>
+                    
+                    <!---Header of main -------------------------------------------------------------------------------------------  -->
+                    <div class="w-[85%]">
+                        <div class="flex items-center justify-center mx-auto">
+                            <h1 class="text-md md:text-xl lg:text-5xl text-right font-bold text-purple-200" style="font-family:'Rubik Vinyl', serif; letter-spacing:0.5rem;" >CULTURE PARTAGEE</h1>
+                        </div>
+                        <div class="items-center justify-center">
+                            <h2 class="text-sm lg:text-xl font-semi-bold text-white text-center">Bonjour, <br><span class="text-md text-purple-100"><?php echo htmlspecialchars($userInfo['last_name']) . " " . htmlspecialchars($userInfo['first_name']); ?></span></h2>
+                        </div>
                     </div>
-                </header>
+                </section>
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
+                <!-- ------------------------------------ -->
                 <!-- body of main --------------------------------------------------------------------------------------->
-                <section class="p-6 w-4/5 bg-red-600 p-4">
+                <section class="p-6 w-full p-4 bg-gray-100">
                     <!-- Cartes des statistiques -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="bg-white shadow-2xl rounded-lg p-4">
-                            <h3 class="text-lg font-semibold text-gray-600">Total des visiteurs</h3>
-                            <p class="text-2xl font-bold text-purple-600"><?php echo htmlspecialchars($totalVisitors)?></p>
+                    <div id="quick-statistics" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:w-4/5 lg:mx-auto">
+                        <div class="bg-white shadow-2xl rounded-lg p-4 flex flex-col justify-center items-center h-64 lg:h-96">
+                            <h3 class="text-lg lg:text-2xl font-semibold text-gray-600 mb-6">Total des visiteurs</h3>
+                            <div class="h-20 w-20 bg-purple-700 rounded-full p-4 flex justify-center items-center">
+                                <p class="text-3xl font-bold text-white bg-purple-700 rounded-full"><?php echo htmlspecialchars($totalVisitors)?></p>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-2xl rounded-lg p-4">
-                            <h3 class="text-lg font-semibold text-gray-600">Total des auteurs</h3>
-                            <p class="text-2xl font-bold text-purple-600"><?php echo htmlspecialchars($totalAuthors)?></p>
+                        <div class="bg-white shadow-2xl rounded-lg p-4 flex flex-col justify-center items-center h-64 lg:h-96">
+                            <h3 class="text-lg lg:text-2xl font-semibold text-gray-600 mb-6">Total des auteurs</h3>
+                            <div class="h-20 w-20 bg-purple-700 rounded-full p-4 flex justify-center items-center">
+                                <p class="text-3xl font-bold text-white text-center"><?php echo htmlspecialchars($totalAuthors)?></p>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-2xl rounded-lg p-4">
-                            <h3 class="text-lg font-semibold text-gray-600">Total des articles</h3>
-                            <p class="text-2xl font-bold text-purple-600">32</p>
+                        <div class="bg-white shadow-2xl rounded-lg p-4 flex flex-col justify-center items-center h-64 lg:h-96">
+                            <h3 class="text-lg lg:text-2xl font-semibold text-gray-600 mb-6">Total des articles</h3>
+                            <div class="h-20 w-20 bg-purple-700 rounded-full p-4 flex justify-center items-center">
+                                <p class="text-3xl font-bold text-white">32</p>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-2xl rounded-lg p-4">
-                            <h3 class="text-lg font-semibold text-gray-600">Total des catégories</h3>
-                            <p class="text-2xl font-bold text-purple-600"><?php echo htmlspecialchars($totalCategories)?></p>
+                        <div class="bg-white shadow-2xl rounded-lg p-4 flex flex-col justify-center items-center h-64 lg:h-96">
+                            <h3 class="text-lg lg:text-2xl font-semibold text-gray-600 mb-6">Total des catégories</h3>
+                            <div class="h-20 w-20 bg-purple-700 rounded-full p-4 flex justify-center items-center">
+                                <p class="text-3xl font-bold text-white"><?php echo htmlspecialchars($totalCategories)?></p>
+                            </div>
                         </div>
                     </div>
+                    <!-- ----------------- -->
+                    <!-- ----------------- -->
+                    <!-- ----------------- -->
+                    <!-- ----------------- -->
+                    <!-- ----------------- -->
+                    <!-- ----------------- -->
+
+
+
                     <!-- gestion des catégories------------------------------------------------------------------------ -->
-                    <div id="manage-categories" class="section hidden mt-8">
-                        <h3 class="text-lg font-semibold text-purple-500 mb-4">Liste des catégories</h3>
-                        <div class="overflow-x-auto p-4 bg-white rounded-lg shadow-md mb-16">
+                    <div id="manage-categories" class="section hidden w-1/2 mx-auto">
+                        <h3 class="text-lg font-bold text-purple-700 mb-4">Liste des catégories :</h3>
+                        <div class="overflow-x-auto p-4 rounded-lg shadow-md mb-16">
                             <table class="table-auto w-full border-collapse border border-gray-200">
                                 <thead class="bg-purple-700 text-white">
                                     <tr>
@@ -263,8 +303,8 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                                         <td class="px-4 py-2 border border-gray-300"><?php echo htmlspecialchars($category['label']); ?></td>
                                         <td class="px-4 py-2 border border-gray-300" style="width: 25%;">
                                         <div class="flex gap-4 justify-around">
-                                            <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-green-600">Modifier</button>
-                                            <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Supprimer</button>
+                                            <button class="bg-blue-400 text-white px-2 py-1 rounded hover:bg-blue-600">Modifier</button>
+                                            <button class="bg-red-400 text-white px-2 py-1 rounded hover:bg-red-600">Supprimer</button>
                                         </div>
                                         </td>
                                         <?php endforeach; ?>
@@ -294,9 +334,9 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                                 </div>
                             </div>
                         </div>
-                        <h1 class="text-purple-700 font-bold mb-6">Gestion des tags :</h1>
+                        <h1 class="text-lg text-purple-700 font-bold mb-6">Gestion des tags :</h1>
                         <div class="mb-4">
-                            <h2 class="mb-4 text-lg text-purple-950">- Ajouter Tag :</h2>
+                            <h2 class="mb-4 text-lg text-purple-950"> + Ajouter Tag :</h2>
                             <form action="../includes/tag.actions.php" method="POST" class="flex">
                                 <label for="tag_name"></label>
                                 <input type="text" id="tag_name" name="tag_name" class="w-1/2 px-4 py-2 border border-gray-300 rounded bg-gray-100" required name="categoryLabel">
@@ -306,7 +346,7 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             </form>
                         </div>
                         <h2 class="my-4 font-bold text-rose-700">Liste des tags :</h2>
-                        <div class="width3/4 rounded shadow-xl bg-purple-300 min-h-48 p-8">
+                        <div class="width3/4 rounded shadow-xl bg-purple-200 min-h-48 p-8">
                             <?php foreach($tags as $tag) : ?>
                             <span id="badge-dismiss-dark" class="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-gray-200 bg-gray-100 rounded dark:bg-gray-700 mr-2">
                                 <?php echo htmlspecialchars($tag['tag_title']); ?>
@@ -320,28 +360,19 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             <?php endforeach; ?>
                         </div>
                     </div>
+
+                 
+
+
+
                     <!-- Gestion des utilisateurs -->
-                    <div id="manage-users" class="section hidden mt-8">
-                    <style>
-                        .filter-panel {
-                            max-height: 0;
-                            overflow: hidden;
-                            transition: max-height 0.3s ease-out;
-                        }
-                        
-                        .filter-panel.show {
-                            max-height: 500px;
-                        }
-                    </style>
+                    <div id="manage-users" class="section hidden">
                         <div class="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-lg my-8">
                             <!-- En-tête avec recherche et filtres -->
                             <div class="mb-6">
                                 <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h2>
-                                    <button
-                                        id="filterToggle"
-                                        class="flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-                                    >
+                                    <h2 class="text-2xl font-bold text-purple-800">Gestion des Utilisateurs :</h2>
+                                    <button id="filterToggle" class="flex items-center px-4 py-2 bg-purple-500 hover:bg-purple-700 rounded-lg transition-colors text-gray-100">
                                         <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M3 4h18M3 12h18M3 20h18"></path>
                                         </svg>
@@ -414,7 +445,6 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200" id="userTableBody">
-                                        <!-- Le contenu du tableau sera injecté ici par JavaScript -->
                                     </tbody>
                                 </table>
                             </div>
@@ -450,6 +480,9 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             </div>
                         </div>
                     </div>
+
+
+
                     <!-- Gestion des articles -->
                     <div id="manage-articles" class="section hidden mt-8">
                         <h3 class="text-lg font-semibold text-gray-600 mb-4">Gérer les articles</h3>
@@ -475,6 +508,10 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             </tbody>
                         </table>
                     </div>
+
+
+
+
                     <!-- Statistiques -->
                     <div id="statistics" class="section hidden mt-8" >
                         <h3 class="text-lg font-semibold text-gray-600 mb-4">Les statistiques</h3>
@@ -500,6 +537,10 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
                             </tbody>
                         </table>
                     </div>
+
+
+
+
                 </section>
             </main>
         </div>
@@ -510,9 +551,14 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
             return {
                     isSidebarOpen: false,
                 }
-            }
-        </script>
-        <script>
+            };
+
+            // ------------------------------------------------
+
+            
+
+
+       
     //         document.querySelectorAll('button[data-section]').forEach(button => {
     //     button.addEventListener('click', () => {
     //         const targetSection = button.getAttribute('data-section');
@@ -535,42 +581,56 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
 
 
 
+        let quickStatisticsBtn = document.getElementById("quick-statistics-btn");
         let categoriesBtn = document.getElementById("categories-btn");
         let usersBtn = document.getElementById("users-btn");
         let articlesBtn = document.getElementById("articles-btn");
         let statisticsBtn = document.getElementById("statistics-btn");
 
-        let gategories = document.getElementById("manage-categories");
+        let quickStatistics = document.getElementById("quick-statistics");
+        let categories = document.getElementById("manage-categories");
         let manageUsers = document.getElementById("manage-users");
         let articles = document.getElementById("manage-articles");
         let statistics = document.getElementById("statistics");
 
         categoriesBtn.addEventListener("click", ()=> {
-            gategories.classList.remove("hidden");
+            categories.classList.remove("hidden");
             manageUsers.classList.add("hidden");
             articles.classList.add("hidden");
             statistics.classList.add("hidden");
+            quickStatistics.classList.add("hidden");
         });
 
         usersBtn.addEventListener("click", ()=> {
-            gategories.classList.add("hidden");
+            categories.classList.add("hidden");
             manageUsers.classList.remove("hidden");
             articles.classList.add("hidden");
             statistics.classList.add("hidden");
+            quickStatistics.classList.add("hidden");
         });
 
         articlesBtn.addEventListener("click", ()=> {
-            gategories.classList.add("hidden");
+            categories.classList.add("hidden");
             manageUsers.classList.add("hidden");
             articles.classList.remove("hidden");
             statistics.classList.add("hidden");
+            quickStatistics.classList.add("hidden");
         });
 
         statisticsBtn.addEventListener("click", ()=> {
-            gategories.classList.add("hidden");
+            categories.classList.add("hidden");
             manageUsers.classList.add("hidden");
             articles.classList.add("hidden");
             statistics.classList.remove("hidden");
+            quickStatistics.classList.add("hidden");
+        });
+
+        quickStatisticsBtn.addEventListener("click", ()=> {
+            quickStatistics.classList.remove("hidden");
+            categories.classList.add("hidden");
+            manageUsers.classList.add("hidden");
+            articles.classList.add("hidden");
+            statistics.classList.add("hidden");
         });
         // ----------------------------------------------------
         // Fonction pour ouvrir la modal
@@ -626,17 +686,18 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
             // Fonction pour rendre le statut avec la bonne couleur
             function getStatusBadge(status) {
                 const colors = {
-                    'Actif': 'bg-green-100 text-green-800',
-                    'Suspendu': 'bg-red-100 text-red-800'
+                    'actif': 'bg-green-100 text-green-800',
+                    'suspendu': 'bg-red-100 text-red-800'
                 };
                 return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colors[status]}">${status}</span>`;
             }
+          
 
             // Fonction pour rendre le tableau
             function renderUsers(users) {
                 const tbody = document.getElementById('userTableBody');
                 tbody.innerHTML = users.map((user, index) => `
-                    <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                    <tr class="hover:bg-purple-200  ${index % 2 === 0 ? 'bg-purple-50' : 'bg-purple-100'}">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="font-medium text-gray-900">${user.username}</div>
                         </td>
@@ -694,9 +755,4 @@ family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
         </script>
     </div>
 </body>
-
-
-
-<?php
-include('../includes/footer.php');
-?>
+        </html>
