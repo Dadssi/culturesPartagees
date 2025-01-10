@@ -82,40 +82,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     // header("Location: ../public/adminDashboard.php");
                     // exit;
-                }
-
-                if (!empty($_POST['tags'])) {
-                    $stmt = $pdo->prepare('INSERT INTO article_tags (id_article, id_tag) VALUES (?, ?)');
-                    foreach ($_POST['tags'] as $tag_id) {
-                        $stmt->execute([$article_id, $tag_id]);
                     }
 
+                    if (!empty($_POST['tags'])) {
+                        $stmt = $pdo->prepare('INSERT INTO article_tags (id_article, id_tag) VALUES (?, ?)');
+                        foreach ($_POST['tags'] as $tag_id) {
+                            $stmt->execute([$article_id, $tag_id]);
+                        }
+                        // $articles = [];
 
+                        // try {
+                            // $db = Database::getInstance();
+                            // $conn = $db->getConnection();
 
+                            // Requête pour récupérer les articles avec leurs tags
+                        //     $query = "
+                        //         SELECT 
+                        //             articles.id_article, 
+                        //             articles.title, 
+                        //             articles.content, 
+                        //             articles.picture, 
+                        //             GROUP_CONCAT(tags.label SEPARATOR ', ') AS tags
+                        //         FROM 
+                        //             articles
+                        //         LEFT JOIN 
+                        //             article_tags ON articles.id_article = article_tags.id_article
+                        //         LEFT JOIN 
+                        //             tags ON article_tags.id_tag = tags.id_tag
+                        //         GROUP BY 
+                        //             articles.id_article
+                        //     ";
+                            
+                        //     $stmt = $conn->prepare($query);
+                        //     $stmt->execute();
 
+                        //     // Stocker les articles
+                        //     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        // } catch (PDOException $e) {
+                        //     echo "Erreur : " . $e->getMessage();
+                        // }
 
-
-
-
-
-
-
-                $stmt = $conn->prepare("
-                    INSERT INTO users (first_name, last_name, email, password, role, user_picture_path, registration_date)
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())
-                ");
-                $stmt->execute([$prenom, $nom, $email, $hashedPassword, $role, $photoPath]);
-
-                $_SESSION['success_message'] = "Inscription réussie. Vous pouvez maintenant vous connecter.";
-                header('Location: login.php');
-                exit;
-            }
-        } catch (PDOException $e) {
-            $errors[] = "Erreur de base de données : " . $e->getMessage();
-        }
+                    }            
+                 
+                }
+             } catch (PDOException $e) {
+                    $errors[] = "Erreur de base de données : " . $e->getMessage();
+                }
     }
 
-
+    }
 
 }
 
