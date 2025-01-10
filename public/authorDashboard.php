@@ -170,7 +170,6 @@ $tags = tag::getAllTags();
         <!-- Ajouter un article -->
         <div id="add-article" class="section mt-8 w-3/4 mx-auto">
             <h2 class="font-bold text-purple-800 mb-10 text-2xl">Ajouter un article :</h2>
-            <!-- Modal body -->
             <form action="#">
                 <div class="flex flex-col mb-4">
                     <div>
@@ -181,7 +180,6 @@ $tags = tag::getAllTags();
                         <label for="category" class="block mb-2 text-sm font-medium text-gray-900"></label>
                         <select id="category" name="category" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                             <option selected="">Choisir une catégorie</option>
-                            <!-- inserer une forEach PHP -->
                             <?php foreach($categories as $category) :?>
                             <option value="<?php echo htmlspecialchars($category['label']); ?>"><?php echo htmlspecialchars($category['label']); ?></option>
                             <?php endforeach; ?>
@@ -205,8 +203,8 @@ $tags = tag::getAllTags();
                     </div>
 
                     <div class="sm:col-span-2">
-                        <label for="article-text" class="block mb-2 text-sm font-medium text-gray-900"></label>
-                        <textarea id="article-text" name="article-text" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="Veuillez écrire votre aerticle ici..."></textarea>                    
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900"></label>
+                        <textarea id="content" name="content" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="Veuillez écrire votre article ici..."></textarea>                    
                     </div>
                     <div class="my-4">
                         <label for="article-img" class="block mb-2 text-sm font-medium text-gray-900">Veuillez choisir une image à votre article :</label>

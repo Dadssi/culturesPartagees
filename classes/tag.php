@@ -14,12 +14,23 @@ class Tag {
 
     // Setters
     public function setLabel($tag_title) { $this->tag_title = $tag_title; }
+    public function setId($id_tag) {$this->id_tag = $id_tag;}
     // CRUD Methods
     public function createTag() {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("INSERT INTO tags (tag_title) VALUES (?)");
         $stmt->execute([$this->tag_title]);
     }
+
+    public function createTags(array $tags) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("INSERT INTO tags (tag_title) VALUES (?)");
+    
+        foreach ($tags as $tag) {
+            $stmt->execute([$tag]);
+        }
+    }
+    
 
     public static function read($id_tag = null) {
         $db = Database::getInstance()->getConnection();
@@ -54,7 +65,7 @@ class Tag {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getTotalCategories() {
+    public static function getTotalTags() {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->query("SELECT COUNT(*) as total FROM tags");
         return $stmt->fetch(PDO::FETCH_ASSOC);

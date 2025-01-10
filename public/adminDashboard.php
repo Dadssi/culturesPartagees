@@ -239,18 +239,12 @@ foreach ($allUsers as $user) {
                     </div>
                 </section>
                 <!-- ------------------------------------ -->
+                <!------------- body of main --------------->
                 <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- ------------------------------------ -->
-                <!-- body of main --------------------------------------------------------------------------------------->
                 <section class="p-6 w-full p-4 bg-gray-100">
+                    <!----------------------------->
                     <!-- Cartes des statistiques -->
+                    <!----------------------------->
                     <div id="quick-statistics" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:w-4/5 lg:mx-auto">
                         <div class="bg-white shadow-2xl rounded-lg p-4 flex flex-col justify-center items-center h-64 lg:h-96">
                             <h3 class="text-lg lg:text-2xl font-semibold text-gray-600 mb-6">Total des visiteurs</h3>
@@ -277,17 +271,10 @@ foreach ($allUsers as $user) {
                             </div>
                         </div>
                     </div>
-                    <!-- ----------------- -->
-                    <!-- ----------------- -->
-                    <!-- ----------------- -->
-                    <!-- ----------------- -->
-                    <!-- ----------------- -->
-                    <!-- ----------------- -->
-
-
-
-                    <!-- gestion des catégories------------------------------------------------------------------------ -->
-                    <div id="manage-categories" class="section hidden w-1/2 mx-auto">
+                    <!----------------------------->
+                    <!-- gestion des catégories---->
+                    <!----------------------------->
+                    <div id="manage-categories" class="section hidden w-full md:w-3/4 lg:w-1/2 mx-auto">
                         <h3 class="text-lg font-bold text-purple-700 mb-4">Liste des catégories :</h3>
                         <div class="overflow-x-auto p-4 rounded-lg shadow-md mb-16">
                             <table class="table-auto w-full border-collapse border border-gray-200">
@@ -346,26 +333,27 @@ foreach ($allUsers as $user) {
                             </form>
                         </div>
                         <h2 class="my-4 font-bold text-rose-700">Liste des tags :</h2>
-                        <div class="width3/4 rounded shadow-xl bg-purple-200 min-h-48 p-8">
-                            <?php foreach($tags as $tag) : ?>
-                            <span id="badge-dismiss-dark" class="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-gray-200 bg-gray-100 rounded dark:bg-gray-700 mr-2">
-                                <?php echo htmlspecialchars($tag['tag_title']); ?>
-                                <button type="button" class="inline-flex items-center p-1 ms-2 text-sm text-gray-400 bg-transparent rounded-sm hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-gray-300" data-dismiss-target="#badge-dismiss-dark" aria-label="Remove">
-                                    <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                    </svg>
-                                    <span class="sr-only">Remove badge</span>
-                                </button>
-                            </span>
+                        <div class="rounded shadow-xl bg-purple-200 min-h-48 p-8">
+                            <?php foreach ($tags as $tag) : ?>
+                                <span id="badge-dismiss-dark" class="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-gray-200 bg-gray-700 rounded mr-2">
+                                    <?php echo htmlspecialchars($tag['tag_title']); ?>
+                                    <form method="POST" action="tag.actions.php" style="display: inline;">
+                                        <input type="hidden" name="id_tag" value="<?php echo htmlspecialchars($tag['id_tag']); ?>">
+                                        <button type="submit" class="inline-flex items-center ms-2 text-sm text-gray-400 bg-transparent rounded-sm hover:text-rose-900" aria-label="Remove">
+                                            <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                            <span class="sr-only">Remove badge</span>
+                                        </button>
+                                    </form>
+                                </span>
                             <?php endforeach; ?>
                         </div>
+
                     </div>
-
-                 
-
-
-
-                    <!-- Gestion des utilisateurs -->
+                    <!----------------------------->
+                    <!-- Gestion des utilisateurs-->
+                    <!----------------------------->
                     <div id="manage-users" class="section hidden">
                         <div class="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-lg my-8">
                             <!-- En-tête avec recherche et filtres -->
@@ -480,10 +468,9 @@ foreach ($allUsers as $user) {
                             </div>
                         </div>
                     </div>
-
-
-
-                    <!-- Gestion des articles -->
+                    <!----------------------------->                    
+                    <!-- Gestion des articles ----->
+                    <!----------------------------->
                     <div id="manage-articles" class="section hidden mt-8">
                         <h3 class="text-lg font-semibold text-gray-600 mb-4">Gérer les articles</h3>
                         <table class="w-full bg-white shadow rounded-lg overflow-hidden">
@@ -508,11 +495,9 @@ foreach ($allUsers as $user) {
                             </tbody>
                         </table>
                     </div>
-
-
-
-
-                    <!-- Statistiques -->
+                    <!----------------------------->
+                    <!-- Statistiques ------------->
+                    <!----------------------------->
                     <div id="statistics" class="section hidden mt-8" >
                         <h3 class="text-lg font-semibold text-gray-600 mb-4">Les statistiques</h3>
                         <table class="w-full bg-white shadow rounded-lg overflow-hidden">
@@ -537,10 +522,6 @@ foreach ($allUsers as $user) {
                             </tbody>
                         </table>
                     </div>
-
-
-
-
                 </section>
             </main>
         </div>

@@ -36,6 +36,9 @@ CREATE TABLE articles (
 );
 ALTER TABLE articles CHANGE user_picture_path article_picture_path VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
 
+ALTER TABLE articles ADD COLUMN tags type_de_donnee options;
+
+
 
 
 CREATE TABLE tags (

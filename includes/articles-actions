@@ -1,0 +1,170 @@
+<?php
+require_once '../config/database.php';
+require_once '../classes/article.php';
+
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $categoryLabel = $_POST['categoryLabel'] ?? '';
+
+    // Vérification si le champ est vide
+    if (empty($categoryLabel)) {
+        $errors[] = 'Vous devez saisir une catégorie.';
+    } else {
+        // Création d'une instance de la classe Category
+        $category = new Category($categoryLabel);
+
+        // Vérifier si la catégorie existe déjà
+        if ($category->exists()) {
+            $errors[] = 'Cette catégorie existe déjà dans la base de données.';
+        } else {
+            // Ajouter la catégorie si elle n'existe pas
+            $category->createCategory();
+            header("Location: ../public/adminDashboard.php");
+            exit;
+        }
+    }
+}
+// --------------------------------------------------------------------------------------------------
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $articleTitle = $_POST['title'] ?? '';
+    $articleCategory = $_POST['category'] ?? '';
+    $articleContent = $_POST['content'] ?? '';
+    $articlePicture = $_FILES['article-img'] ?? '';
+
+    if (empty($articleTitle)){
+        $errors[] = 'Vous devez saisir un titre pour votre article';
+    }
+    if (empty($articleCategory)){
+        $errors[] = 'Vous devez choisir une catégorie pour votre article';
+    }
+    if (empty($articleContent)){
+        $errors[] = 'Vous devez saisir un texte pour votre article';
+    }
+    if (empty($articlePicture)){
+        $errors[] = 'Vous devez ajouter une photo pour votre article';
+    }
+
+    $photoPath = null;
+    if ($articlePicture && $articlePicture['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../assets/imgs/uploads/';
+        $photoName = uniqid() . '-' . basename($photo['name']);
+        $photoPath = $uploadDir . $photoName;
+
+        if (!move_uploaded_file($photo['tmp_name'], $photoPath)) {
+            $errors[] = "Échec du téléchargement de la photo.";
+        }
+    }
+
+    if (empty($errors)) {
+        // $db = Database::getInstance();
+        // $conn = $db->getConnection();
+
+        try {
+            // Vérifier si l'email est déjà utilisé
+            $stmt = $conn->prepare("SELECT id_article FROM articles WHERE title = ?");
+            $stmt->execute([$articleTitle]);
+            if ($stmt->fetch()) {
+                $errors[] = "Ce titre est déjà utilisé.";
+            } else {
+                $article = new Article();
+                if ($article->exists()) {
+                    $errors[] = 'Cet article existe déjà dans la base de données.';
+                } else {
+                    $article->createArticle();
+                    $newArticleId = $article->createArticle();
+                    if (!empty($_POST['tags'])) {
+                        $stmt = $conn->prepare('INSERT INTO article_tags (id_article, id_tag) VALUES (?, ?)');
+                        foreach ($_POST['tags'] as $tag_id) {
+                            $stmt->execute([$newArticleId, $tag_id]);
+                        }
+                    }
+                    // header("Location: ../public/adminDashboard.php");
+                    // exit;
+                }
+
+                if (!empty($_POST['tags'])) {
+                    $stmt = $pdo->prepare('INSERT INTO article_tags (id_article, id_tag) VALUES (?, ?)');
+                    foreach ($_POST['tags'] as $tag_id) {
+                        $stmt->execute([$article_id, $tag_id]);
+                    }
+
+
+
+
+
+
+
+
+
+
+
+                $stmt = $conn->prepare("
+                    INSERT INTO users (first_name, last_name, email, password, role, user_picture_path, registration_date)
+                    VALUES (?, ?, ?, ?, ?, ?, NOW())
+                ");
+                $stmt->execute([$prenom, $nom, $email, $hashedPassword, $role, $photoPath]);
+
+                $_SESSION['success_message'] = "Inscription réussie. Vous pouvez maintenant vous connecter.";
+                header('Location: login.php');
+                exit;
+            }
+        } catch (PDOException $e) {
+            $errors[] = "Erreur de base de données : " . $e->getMessage();
+        }
+    }
+
+
+
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+
+public static function createArticle($title, $content, $category, $author, $image = null) {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("INSERT INTO articles (title, content, id_category, id_author, image_path, status, date_publication)
+        VALUES (:title, :content, :category, :author, :image, 'pending', NOW())
+    ");
+    
+    // Exécution de la requête avec les paramètres fournis
+    $stmt->execute([
+        'title' => $title,
+        'content' => $content,
+        'category' => $category,
+        'author' => $author,
+        'image' => $image
+    ]);
+    
+    // Retourne l'ID de l'article nouvellement créé
+    return $db->lastInsertId();
+}
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'];
+    $content = $_POST['article-text'];
+    $categoryId = $_POST['category'];
+    $tags = $_POST['tags'] ?? []; // Par défaut, un tableau vide si aucun tag n'est sélectionné
+
+    // Gestion de l'image
+    $image = null;
+    if (isset($_FILES['article-img']) && $_FILES['article-img']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'uploads/';
+        $image = $uploadDir . basename($_FILES['article-img']['name']);
+        move_uploaded_file($_FILES['article-img']['tmp_name'], $image);
+    }
+
+    try {
+        // Instanciation de l'auteur (assurez-vous que $author est initialisé)
+        $author = new Author($authorId); // Exemple
+        $articleId = $author->createArticleWithTags($title, $content, $categoryId, $tags, $image);
+
+        echo "Article ajouté avec succès ! ID : " . $articleId;
+    } catch (Exception $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
+}

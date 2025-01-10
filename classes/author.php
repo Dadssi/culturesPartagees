@@ -1,15 +1,19 @@
 <?php
+    require_once 'user.php';
+    
     class Author extends User {
-    public function __construct($id = null, $nom = null, $email = null, $password = null) {
-        parent::__construct($id, $nom, $email, $password);
+    public function __construct($id = null, $nom = null, $firstName = null, $lastName = null, $email = null, $password = null) {
+        parent::__construct($id, $nom, $firstName, $lastName, $email, $password);
         $this->role = 'author';
     }
 
-    public function register($nom, $email, $password) {
+    public function register($nom, $firstName, $lastName, $email, $password) {
         $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("INSERT INTO users (nom, email, password, role) VALUES (:nom, :email, :password, :role)");
+        $stmt = $db->prepare("INSERT INTO users (nom, first_name, last_name, email, password, role) VALUES (:nom, :first_name, :last_name, :email, :password, :role)");
         return $stmt->execute([
             'nom' => $nom,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT),
             'role' => 'author'

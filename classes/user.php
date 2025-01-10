@@ -1,14 +1,17 @@
 <?php
-// User.php
 abstract class User {
     protected $id;
+    protected $firstName;
+    protected $lastName;
     protected $nom;
     protected $email;
     protected $password;
     protected $role;
 
-    public function __construct($id = null, $nom = null, $email = null, $password = null) {
+    public function __construct($id = null, $firstName = null, $lastName = null, $nom = null, $email = null, $password = null) {
         $this->id = $id;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->nom = $nom;
         $this->email = $email;
         $this->password = $password;
@@ -17,11 +20,15 @@ abstract class User {
     // Getters
     public function getId() { return $this->id; }
     public function getNom() { return $this->nom; }
+    public function getFisrtName() { return $this->firstName;}
+    public function getLastName() { return $this->lastName;}
     public function getEmail() { return $this->email; }
     public function getRole() { return $this->role; }
 
     // Setters
     public function setNom($nom) { $this->nom = $nom; }
+    public function setFirstName($firstName) { $this->firstName = $firstName;}
+    public function setLastName($lastName) { $this->lastName = $lastName;}
     public function setEmail($email) { $this->email = $email; }
     public function setPassword($password) { 
         $this->password = password_hash($password, PASSWORD_DEFAULT);
@@ -46,15 +53,16 @@ abstract class User {
 
     public function updateProfile($data) {
         $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("UPDATE users SET nom = :nom, email = :email WHERE id = :id");
+        $stmt = $db->prepare("UPDATE users SET nom = :nom, first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id");
         return $stmt->execute([
+            'first_name' => $data['first_name'], 
+            'last_name' => $data['last_name'], 
             'nom' => $data['nom'],
             'email' => $data['email'],
             'id' => $this->id
         ]);
     }
 
-    // Dans la classe User
     public static function getInfoUser($id) {
         try {
             $db = Database::getInstance()->getConnection();
@@ -66,8 +74,7 @@ abstract class User {
             return false;
         }
     }
-
-    //----------------------------------------------------------------------------- 
+ 
     public static function getAllUsers() {
         try {
             $db = Database::getInstance()->getConnection();
